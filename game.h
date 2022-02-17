@@ -2,6 +2,7 @@
 #include "const.h"
 #include "SFML/Graphics.hpp"
 #include "player.h"
+#include "meteor.h"
 
 class Game {
 public:
@@ -16,5 +17,6 @@ private:
 
 	sf::RenderWindow window;
 	Player player;
+	Meteor meteor;
 };
 

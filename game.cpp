@@ -9,7 +9,8 @@ Game::Game() :
 			sf::Style::Titlebar | sf::Style::Close
 	),
 	player(WINDOW_WIDTH / 2 - 112 / 2.f,
-		WINDOW_HEIGHT - 75.f, "images/playerShip2_green.png")
+		WINDOW_HEIGHT - 75.f, "images/playerShip2_green.png"),
+	meteor(200, -100, "images/meteorBrown_big1.png")
 {
 	window.setFramerateLimit(60);
 }
@@ -29,10 +30,12 @@ void Game::check_events() {
 }
 void Game::update() {
 	player.update();
+	meteor.update();
 }
 void Game::draw() {
 	window.clear();
 	player.draw(window);
+	meteor.draw(window);
 	window.display();
 }
 void Game::check_collisions() {}

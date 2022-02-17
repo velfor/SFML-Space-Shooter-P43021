@@ -10,7 +10,7 @@ void Player::draw(sf::RenderWindow& window) {
 	window.draw(sprite);
 }
 void Player::update() {
-	float speedx = 5.f;
+	float speedx = PLAYER_SPEEDX;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && 
 		sprite.getPosition().x > 0
 		)
