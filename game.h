@@ -1,6 +1,7 @@
 #pragma once
 #include "const.h"
 #include "SFML/Graphics.hpp"
+#include "player.h"
 
 class Game {
 public:
@@ -14,5 +15,6 @@ private:
 	void check_collisions();
 
 	sf::RenderWindow window;
+	Player player;
 };
 

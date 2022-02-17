@@ -7,8 +7,12 @@ Game::Game() :
 			),
 			WINDOW_TITLE,
 			sf::Style::Titlebar | sf::Style::Close
-	)
-{}
+	),
+	player(WINDOW_WIDTH / 2 - 112 / 2.f,
+		WINDOW_HEIGHT - 75.f, "images/playerShip2_green.png")
+{
+	window.setFramerateLimit(60);
+}
 void Game::play() {
 	while (window.isOpen()) {
 		check_events();
@@ -23,9 +27,12 @@ void Game::check_events() {
 		if (event.type == sf::Event::Closed) window.close();
 	}
 }
-void Game::update() {}
+void Game::update() {
+	player.update();
+}
 void Game::draw() {
 	window.clear();
+	player.draw(window);
 	window.display();
 }
 void Game::check_collisions() {}
