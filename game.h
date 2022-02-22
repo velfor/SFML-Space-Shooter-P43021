@@ -3,6 +3,7 @@
 #include "SFML/Graphics.hpp"
 #include "player.h"
 #include "meteor.h"
+#include <vector>
 
 class Game {
 public:
@@ -17,6 +18,6 @@ private:
 
 	sf::RenderWindow window;
 	Player player;
-	Meteor meteor;
+	std::vector<Meteor*> meteor_sprites;
 };
 

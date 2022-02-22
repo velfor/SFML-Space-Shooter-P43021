@@ -9,10 +9,16 @@ Game::Game() :
 			sf::Style::Titlebar | sf::Style::Close
 	),
 	player(WINDOW_WIDTH / 2 - 112 / 2.f,
-		WINDOW_HEIGHT - 75.f, "images/playerShip2_green.png"),
-	meteor(200, -100, "images/meteorBrown_big1.png")
+		WINDOW_HEIGHT - 75.f, "images/playerShip2_green.png")
+	
 {
 	window.setFramerateLimit(60);
+	meteor_sprites.reserve(METEORS_QTY);
+	for (size_t i = 0; i < METEORS_QTY; i++) {
+
+		meteor_sprites.push_back(new Meteor());
+	}
+
 }
 void Game::play() {
 	while (window.isOpen()) {

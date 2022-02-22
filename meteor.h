@@ -7,10 +7,17 @@ private:
 	sf::Texture texture;
 	float speedx;
 	float speedy;
+	static std::string meteor_file_names[];
 public:
-	Meteor(float x, float y, std::string texture_file_name);
+	Meteor();
 	void draw(sf::RenderWindow& window);
 	void update();
 	size_t getWidth();
 	size_t getHeight();
 };
+std::string Meteor::meteor_file_names[] = 
+{ "meteorBrown_big1.png", "meteorBrown_big2.png",
+"meteorBrown_big3.png", "meteorBrown_big4.png", 
+"meteorBrown_med1.png", "meteorBrown_med3.png", 
+"meteorBrown_small1.png", "meteorBrown_small2.png", 
+"meteorBrown_tiny1.png", "meteorBrown_tiny2.png" };

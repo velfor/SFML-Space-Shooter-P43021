@@ -1,9 +1,14 @@
 #include "const.h"
 #include "meteor.h"
 
-Meteor::Meteor(float x, float y, std::string texture_file_name) {
-	texture.loadFromFile(texture_file_name);
+Meteor::Meteor() {
+	size_t type = rand() % 10;
+	texture.loadFromFile(Meteor::meteor_file_names[type]);
 	sprite.setTexture(texture);
+	float x = rand() % (static_cast<size_t>(WINDOW_WIDTH) - 
+		getWidth());
+	float y = rand()%(static_cast<size_t>(WINDOW_HEIGHT / 2))- 
+		WINDOW_HEIGHT / 2;
 	sprite.setPosition(x, y);
 	speedx = rand() % 2 - 1;//getRandom(-1,1)
 	speedy = rand() % 8 + 3;//getRandom(3,11)
