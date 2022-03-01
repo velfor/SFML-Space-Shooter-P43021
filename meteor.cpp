@@ -13,13 +13,7 @@ Meteor::Meteor() {
 	texture.loadFromFile(IMAGES_FOLDER + 
 		Meteor::meteor_file_names[type]);
 	sprite.setTexture(texture);
-	float x = rand() % (static_cast<size_t>(WINDOW_WIDTH) - 
-		getWidth());
-	float y = rand()%(static_cast<size_t>(WINDOW_HEIGHT / 2))- 
-		WINDOW_HEIGHT / 2;
-	sprite.setPosition(x, y);
-	speedx = rand() % 5 - 2;//getRandom(-1,1)
-	speedy = rand() % 8 + 3;//getRandom(3,11)
+	spawn();
 }
 void Meteor::draw(sf::RenderWindow& window) {
 	window.draw(sprite);
@@ -31,13 +25,16 @@ void Meteor::update() {
 		sprite.getPosition().y > WINDOW_HEIGHT
 		)
 	{
-		float startx = rand() % (static_cast<size_t>(WINDOW_WIDTH) - getWidth() + 1);
-		float starty = rand() % (static_cast<size_t>(WINDOW_HEIGHT) + 1) - WINDOW_HEIGHT;
-		sprite.setPosition(startx, starty);
-		speedx = rand() % 5 - 2;
-		speedy = rand() % 8 + 3;
+		spawn();
 	}
 }
 size_t Meteor::getWidth() { return sprite.getLocalBounds().width; }
 size_t Meteor::getHeight() { return sprite.getLocalBounds().height; }
 sf::FloatRect Meteor::getHitBox() { return sprite.getGlobalBounds(); }
+void Meteor::spawn() {
+	float startx = rand() % (static_cast<size_t>(WINDOW_WIDTH) - getWidth() + 1);
+	float starty = rand() % (static_cast<size_t>(WINDOW_HEIGHT) + 1) - WINDOW_HEIGHT;
+	sprite.setPosition(startx, starty);
+	speedx = rand() % 5 - 2;
+	speedy = rand() % 8 + 3;
+}

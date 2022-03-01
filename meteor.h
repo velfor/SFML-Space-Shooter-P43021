@@ -15,4 +15,5 @@ public:
 	size_t getWidth();
 	size_t getHeight();
 	sf::FloatRect getHitBox();
+	void spawn();
 };

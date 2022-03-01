@@ -35,8 +35,8 @@ void Game::check_events() {
 			if (event.type == sf::Event::MouseButtonPressed &&
 				event.mouseButton.button == sf::Mouse::Left)
 			{
-				laser_sprites.push_back(new Laser(player.getPosition().x,
-					player.getPosition().y));
+				laser_sprites.push_back(new Laser(player.getPosition().x +
+					player.getWidth()/2 - 5, player.getPosition().y));
 			}
 			
 	}
@@ -63,13 +63,13 @@ void Game::draw() {
 	switch (game_state) {
 
 	case PLAY:
-		player.draw(window);
 		for (size_t i = 0; i < METEORS_QTY; i++) {
 			meteor_sprites[i]->draw(window);
 		}
 		for (auto it = laser_sprites.begin(); it != laser_sprites.end(); it++) {
 			(*it)->draw(window);
 		}
+		player.draw(window);
 		break;
 	case GAME_OVER:
 		window.draw(game_over.getSprite());
@@ -81,7 +81,18 @@ void Game::check_collisions() {
 		if (player.getHitBox().intersects(
 			meteor_sprites[i]->getHitBox()))
 		{
-			game_state = GAME_OVER;
+			player.reduceHp(meteor_sprites[i]->getWidth()/3);
+			meteor_sprites[i]->spawn();
+		}
+	}
+	if (player.isDead()) game_state = GAME_OVER;
+	laser_sprites.remove_if([](Laser* laser) {return laser->getPosition().y < 0; });
+	for (auto it = laser_sprites.begin(); it != laser_sprites.end(); it++) {
+		for (size_t i = 0; i < METEORS_QTY; i++) {
+			if ((*it)->getHitBox().intersects(meteor_sprites[i]->getHitBox()))
+			{
+				meteor_sprites[i]->spawn();
+			}
 		}
 	}
 }

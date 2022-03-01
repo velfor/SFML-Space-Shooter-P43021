@@ -13,3 +13,4 @@ size_t Laser::getWidth() { return sprite.getLocalBounds().width; }
 size_t Laser::getHeight() { return sprite.getLocalBounds().height; }
 sf::FloatRect Laser::getHitBox() { return sprite.getGlobalBounds(); }
 void Laser::draw(sf::RenderWindow& window) { window.draw(sprite); }
+sf::Vector2f Laser::getPosition() { return sprite.getPosition(); }
