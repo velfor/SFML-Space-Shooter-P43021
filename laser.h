@@ -1,18 +1,16 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 
-class Meteor {
+class Laser {
 private:
 	sf::Sprite sprite;
 	sf::Texture texture;
-	float speedx;
-	float speedy;
-	static std::string meteor_file_names[];
 public:
-	Meteor();
+	Laser(float, float);
 	void draw(sf::RenderWindow& window);
 	void update();
 	size_t getWidth();
 	size_t getHeight();
 	sf::FloatRect getHitBox();
+	sf::Vector2f getPosition();
 };

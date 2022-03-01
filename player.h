@@ -11,5 +11,7 @@ public:
 	void update();
 	size_t getWidth();
 	size_t getHeight();
+	sf::FloatRect getHitBox();
+	sf::Vector2f getPosition();
 };
 

@@ -27,3 +27,5 @@ void Player::update() {
 }
 size_t Player::getWidth() { return sprite.getLocalBounds().width; }
 size_t Player::getHeight() { return sprite.getLocalBounds().height; }
+sf::FloatRect Player::getHitBox() { return sprite.getGlobalBounds(); }
+sf::Vector2f Player::getPosition() { return sprite.getPosition(); }
