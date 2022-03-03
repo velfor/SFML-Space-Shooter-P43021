@@ -7,6 +7,8 @@
 #include "splash.h"
 #include <list>
 #include "laser.h"
+#include "text.h"
+#include "bonus.h"
 
 class Game {
 public:
@@ -25,6 +27,8 @@ private:
 	Splash game_over;
 	std::vector<Meteor*> meteor_sprites;
 	std::list<Laser*> laser_sprites;
-	
+	TextObj hp_text;
+	sf::Clock clock;
+	std::list<Bonus*> bonus_sprites;
 };
 

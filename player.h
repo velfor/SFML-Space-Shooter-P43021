@@ -17,5 +17,6 @@ public:
 	sf::Vector2f getPosition();
 	void reduceHp(float dmg);
 	bool isDead();
+	float getHp();
 };
 

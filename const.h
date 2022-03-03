@@ -9,3 +9,5 @@ const size_t METEORS_QTY = 15;
 const std::string IMAGES_FOLDER = "images/";
 const std::string LASER_FILE_NAME = "laserBlue01.png";
 const float LASER_SPEEDY = 10.f;
+const std::string FONT_FILE_NAME = "res/kenvector_future.ttf";
+const std::string HP_BONUS_FILE_NAME = "pill_green.png";

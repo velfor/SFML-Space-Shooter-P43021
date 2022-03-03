@@ -31,6 +31,7 @@ void Meteor::update() {
 size_t Meteor::getWidth() { return sprite.getLocalBounds().width; }
 size_t Meteor::getHeight() { return sprite.getLocalBounds().height; }
 sf::FloatRect Meteor::getHitBox() { return sprite.getGlobalBounds(); }
+sf::Vector2f Meteor::getPosition() { return sprite.getPosition(); }
 void Meteor::spawn() {
 	float startx = rand() % (static_cast<size_t>(WINDOW_WIDTH) - getWidth() + 1);
 	float starty = rand() % (static_cast<size_t>(WINDOW_HEIGHT) + 1) - WINDOW_HEIGHT;
