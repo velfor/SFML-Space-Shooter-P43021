@@ -11,8 +11,11 @@ public:
 	size_t getHeight();
 	sf::FloatRect getHitBox();
 	sf::Vector2f getPosition();
+	bool getDel();
+	void setDel(bool x);
 private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 	BonusType type;
+	bool del = false;
 };

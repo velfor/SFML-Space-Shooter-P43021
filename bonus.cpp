@@ -17,3 +17,5 @@ size_t Bonus::getWidth() { return sprite.getLocalBounds().width; }
 size_t Bonus::getHeight() { return sprite.getLocalBounds().height; }
 sf::FloatRect Bonus::getHitBox() { return sprite.getGlobalBounds(); }
 sf::Vector2f Bonus::getPosition() { return sprite.getPosition(); }
+bool Bonus::getDel() { return del; }
+void Bonus::setDel(bool x) { del = x; }

@@ -58,6 +58,9 @@ void Game::update() {
 		for (auto it = bonus_sprites.begin(); it != bonus_sprites.end(); it++) {
 			(*it)->update();
 		}
+		for (auto it = exp_sprites.begin(); it != exp_sprites.end(); it++) {
+			(*it)->update();
+		}
 		check_collisions();
 		hp_text.update(std::to_string(static_cast<int>(player.getHp())));
 		break;
@@ -78,6 +81,9 @@ void Game::draw() {
 			(*it)->draw(window);
 		}
 		for (auto it = bonus_sprites.begin(); it != bonus_sprites.end(); it++) {
+			(*it)->draw(window);
+		}
+		for (auto it = exp_sprites.begin(); it != exp_sprites.end(); it++) {
 			(*it)->draw(window);
 		}
 		player.draw(window);
@@ -102,10 +108,11 @@ void Game::check_collisions() {
 	for (auto it = bonus_sprites.begin(); it != bonus_sprites.end(); it++) {
 		if (player.getHitBox().intersects((*it)->getHitBox())) {
 			player.reduceHp(-50);
+			(*it)->setDel(true);
 		}
 	}
 	//удалить бонус, пересекающийся с игроком
-	//bonus_sprites.remove_if([](Bonus* bonus, Player player) {return player.getHitBox().intersects(bonus->getHitBox()); });
+	bonus_sprites.remove_if([](Bonus* bonus) {return bonus->getDel(); });
 	//конец игры
 	if (player.isDead()) game_state = GAME_OVER;
 	//удаление пуль за краем экрана
@@ -118,6 +125,9 @@ void Game::check_collisions() {
 		for (size_t i = 0; i < METEORS_QTY; i++) {
 			if ((*it)->getHitBox().intersects(meteor_sprites[i]->getHitBox()))
 			{
+				Explosion* new_explosion = 
+					new Explosion(meteor_sprites[i]->getCenter());
+				exp_sprites.push_back(new_explosion);
 				meteor_sprites[i]->spawn();
 				//c шансом 10% из метеора выпадает бонус
 				size_t chance = rand() % 100;
@@ -130,4 +140,6 @@ void Game::check_collisions() {
 			}
 		}
 	}
+	//удаляем помеченные на удаление взрывы
+	exp_sprites.remove_if([](Explosion* exp) {return exp->getDel(); });
 }

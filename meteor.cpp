@@ -39,3 +39,10 @@ void Meteor::spawn() {
 	speedx = rand() % 5 - 2;
 	speedy = rand() % 8 + 3;
 }
+sf::Vector2f Meteor::getCenter() {
+	return sf::Vector2f
+	(
+		sprite.getPosition().x + getWidth() / 2.0,
+		sprite.getPosition().y + getHeight() / 2.0
+	);
+}

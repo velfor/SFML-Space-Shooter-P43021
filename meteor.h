@@ -16,5 +16,6 @@ public:
 	size_t getHeight();
 	sf::FloatRect getHitBox();
 	sf::Vector2f getPosition();
+	sf::Vector2f getCenter();
 	void spawn();
 };

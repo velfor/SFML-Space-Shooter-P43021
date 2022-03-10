@@ -9,6 +9,7 @@
 #include "laser.h"
 #include "text.h"
 #include "bonus.h"
+#include "explosion.h"
 
 class Game {
 public:
@@ -30,5 +31,6 @@ private:
 	TextObj hp_text;
 	sf::Clock clock;
 	std::list<Bonus*> bonus_sprites;
+	std::list<Explosion*> exp_sprites;
 };
 
