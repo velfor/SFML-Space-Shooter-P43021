@@ -127,9 +127,8 @@ void Game::check_collisions() {
 		for (size_t i = 0; i < METEORS_QTY; i++) {
 			if ((*it)->getHitBox().intersects(meteor_sprites[i]->getHitBox()))
 			{
-				Explosion* new_explosion = 
-					new Explosion(meteor_sprites[i]->getCenter());
-				exp_sprites.push_back(new_explosion);
+				exp_sprites.emplace_back(std::make_shared<Explosion>(meteor_sprites[i]->getCenter()));
+
 				meteor_sprites[i]->spawn();
 				//c шансом 10% из метеора выпадает бонус
 				size_t chance = rand() % 100;
@@ -143,5 +142,5 @@ void Game::check_collisions() {
 		}
 	}
 	//удаляем помеченные на удаление взрывы
-	exp_sprites.remove_if([](Explosion* exp) {return exp->getDel(); });
+	exp_sprites.remove_if([](const auto &exp) {return exp->getDel(); });
 }

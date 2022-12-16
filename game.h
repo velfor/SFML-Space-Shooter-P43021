@@ -32,6 +32,6 @@ private:
 	TextObj hp_text;
 	sf::Clock clock;
 	std::list<std::shared_ptr<Bonus>> bonus_sprites;
-	std::list<Explosion*> exp_sprites;
+	std::list<std::shared_ptr<Explosion>> exp_sprites;
 };
 

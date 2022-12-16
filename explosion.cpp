@@ -9,11 +9,12 @@ std::string Explosion::explosion_file_names[] =
 	"regularExplosion06.png", "regularExplosion07.png",
 	"regularExplosion08.png" 
 };
-Explosion::Explosion(sf::Vector2f position) {
+Explosion::Explosion(const sf::Vector2f &position)
+	: position(position)
+{
 	texture.loadFromFile(IMAGES_FOLDER + explosion_file_names[frame]);
 	sprite.setTexture(texture);
 	sprite.setOrigin(getWidth() / 2.0, getHeight() / 2.0);
-	this->position = position;
 	sprite.setPosition(position);
 	
 }

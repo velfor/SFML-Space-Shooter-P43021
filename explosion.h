@@ -12,7 +12,7 @@ private:
 	sf::Clock clock;
 	sf::Vector2f position;
 public:
-	Explosion(sf::Vector2f position);
+	Explosion(const sf::Vector2f &position);
 	void draw(sf::RenderWindow& window);
 	void update();
 	size_t getWidth();
