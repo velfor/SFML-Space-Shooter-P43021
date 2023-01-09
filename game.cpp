@@ -1,4 +1,5 @@
 #include "game.h"
+#include <set>
 
 Game::Game() :
 	window(	sf::VideoMode(
@@ -104,36 +105,36 @@ void Game::check_collisions() {
 			meteor_sprites[i]->spawn();
 		}
 	}
-	//игрок с бонусами
-	for (auto it = bonus_sprites.begin(); it != bonus_sprites.end(); it++) {
-		if (player.getHitBox().intersects((*it)->getHitBox())) {
-			player.reduceHp(-50);
-			(*it)->setDel(true);
-		}
-	}
 	//удалить бонус, пересекающийся с игроком
-	bonus_sprites.remove_if([](Bonus* bonus) {return bonus->getDel(); });
+	std::set<std::shared_ptr<Bonus>> active_bonus;
+	copy_if(
+		bonus_sprites.begin(),
+		bonus_sprites.end(),
+		inserter(active_bonus, active_bonus.end()),
+		[this](const auto &bonus) {return player.getHitBox().intersects(bonus->getHitBox()); }
+	);
+	bonus_sprites.remove_if([&active_bonus](const auto &bonus) { return active_bonus.count(bonus) > 0; });
+	std::for_each(active_bonus.begin(), active_bonus.end(), [this](const auto &bonus){ bonus->action(&player); });
 	//конец игры
 	if (player.isDead()) game_state = GAME_OVER;
 	//удаление пуль за краем экрана
 	laser_sprites.remove_if([](Laser* laser) {return laser->getPosition().y < 0; });
 	//удаление бонусов за краем экрана
-	bonus_sprites.remove_if([](Bonus* bonus) {
+	bonus_sprites.remove_if([](const auto &bonus) {
 		return bonus->getPosition().y > WINDOW_HEIGHT; });
 	//пули с метеорами
 	for (auto it = laser_sprites.begin(); it != laser_sprites.end(); it++) {
 		for (size_t i = 0; i < METEORS_QTY; i++) {
 			if ((*it)->getHitBox().intersects(meteor_sprites[i]->getHitBox()))
 			{
-				Explosion* new_explosion = 
-					new Explosion(meteor_sprites[i]->getCenter());
-				exp_sprites.push_back(new_explosion);
+				exp_sprites.emplace_back(std::make_shared<Explosion>(meteor_sprites[i]->getCenter()));
+
 				meteor_sprites[i]->spawn();
 				//c шансом 10% из метеора выпадает бонус
 				size_t chance = rand() % 100;
 				if (chance < 10) {
 					//сгенерировать случайное число для типа бонуса
-					Bonus* new_bonus = new Bonus(static_cast<Bonus::BonusType>(0),
+					auto new_bonus = std::make_shared<Bonus>(static_cast<Bonus::BonusType>(0),
 						meteor_sprites[i]->getPosition());
 					bonus_sprites.push_back(new_bonus);
 				}
@@ -141,5 +142,5 @@ void Game::check_collisions() {
 		}
 	}
 	//удаляем помеченные на удаление взрывы
-	exp_sprites.remove_if([](Explosion* exp) {return exp->getDel(); });
+	exp_sprites.remove_if([](const auto &exp) {return exp->getDel(); });
 }

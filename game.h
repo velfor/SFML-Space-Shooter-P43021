@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "const.h"
 #include "SFML/Graphics.hpp"
 #include "player.h"
@@ -30,7 +31,7 @@ private:
 	std::list<Laser*> laser_sprites;
 	TextObj hp_text;
 	sf::Clock clock;
-	std::list<Bonus*> bonus_sprites;
-	std::list<Explosion*> exp_sprites;
+	std::list<std::shared_ptr<Bonus>> bonus_sprites;
+	std::list<std::shared_ptr<Explosion>> exp_sprites;
 };
 
