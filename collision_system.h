@@ -16,5 +16,9 @@ private:
 		GameState &game_state) const;
 	void handle_player_bonus(Player &player, EntityManager &entities) const;
 	void handle_laser_meteor(EntityManager &entities) const;
+	void handle_laser_meteor_collisions(EntityManager &entities) const;
+	void on_laser_hit_meteor(const Laser &laser,
+		Meteor &meteor,
+		EntityManager &entities) const;
 	void cleanup_offscreen_entities(EntityManager &entities) const;
 };

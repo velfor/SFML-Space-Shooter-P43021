@@ -1,7 +1,14 @@
 #include "collision_system.h"
 #include <algorithm>
-#include <set>
+#include <vector>
 #include "const.h"
+
+namespace {
+struct LaserMeteorHit {
+	Laser *laser;
+	Meteor *meteor;
+};
+} // namespace
 
 void CollisionSystem::process(Player &player,
 	EntityManager &entities,
@@ -30,38 +37,51 @@ void CollisionSystem::handle_player_meteor(Player &player,
 }
 
 void CollisionSystem::handle_player_bonus(Player &player, EntityManager &entities) const {
-	std::set<std::shared_ptr<Bonus>> active_bonus;
-	copy_if(
-		entities.bonuses().begin(),
-		entities.bonuses().end(),
-		inserter(active_bonus, active_bonus.end()),
-		[&player](const auto &bonus) {
-			return player.getHitBox().intersects(bonus->getHitBox());
-		});
-	entities.bonuses().remove_if([&active_bonus](const auto &bonus) {
-		return active_bonus.count(bonus) > 0;
-	});
-	std::for_each(active_bonus.begin(), active_bonus.end(),
-		[&player](const auto &bonus) { bonus->action(&player); });
+	auto &bonuses = entities.bonuses();
+	for (auto it = bonuses.begin(); it != bonuses.end();) {
+		if (player.getHitBox().intersects((*it)->getHitBox())) {
+			(*it)->action(&player);
+			it = bonuses.erase(it);
+		} else {
+			++it;
+		}
+	}
 }
 
 void CollisionSystem::handle_laser_meteor(EntityManager &entities) const {
+	handle_laser_meteor_collisions(entities);
+}
+
+void CollisionSystem::handle_laser_meteor_collisions(EntityManager &entities) const {
+	std::vector<LaserMeteorHit> hits;
+	hits.reserve(entities.lasers().size() * entities.meteors().size());
 	for (const auto &laser : entities.lasers()) {
 		for (const auto &meteor : entities.meteors()) {
 			if (laser->getHitBox().intersects(meteor->getHitBox())) {
-				entities.explosions().emplace_back(
-					std::make_shared<Explosion>(meteor->getCenter()));
-
-				meteor->spawn();
-				size_t chance = rand() % 100;
-				if (chance < 10) {
-					auto new_bonus = std::make_shared<Bonus>(
-						static_cast<Bonus::BonusType>(0),
-						meteor->getPosition());
-					entities.bonuses().push_back(new_bonus);
-				}
+				hits.push_back({laser.get(), meteor.get()});
 			}
 		}
+	}
+
+	for (const auto &hit : hits) {
+		on_laser_hit_meteor(*hit.laser, *hit.meteor, entities);
+	}
+}
+
+void CollisionSystem::on_laser_hit_meteor(const Laser &laser,
+	Meteor &meteor,
+	EntityManager &entities) const {
+	(void)laser;
+	entities.explosions().emplace_back(
+		std::make_shared<Explosion>(meteor.getCenter()));
+
+	meteor.spawn();
+	size_t chance = rand() % 100;
+	if (chance < 10) {
+		auto new_bonus = std::make_shared<Bonus>(
+			static_cast<Bonus::BonusType>(0),
+			meteor.getPosition());
+		entities.bonuses().push_back(new_bonus);
 	}
 }
 
