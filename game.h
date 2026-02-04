@@ -27,8 +27,8 @@ private:
 	Player player;
 	GameState game_state = PLAY;
 	Splash game_over;
-	std::vector<Meteor*> meteor_sprites;
-	std::list<Laser*> laser_sprites;
+	std::vector<std::unique_ptr<Meteor>> meteor_sprites;
+	std::list<std::unique_ptr<Laser>> laser_sprites;
 	TextObj hp_text;
 	sf::Clock clock;
 	std::list<std::shared_ptr<Bonus>> bonus_sprites;
