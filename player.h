@@ -9,14 +9,14 @@ private:
 	float hp = PLAYER_HP;
 public:
 	Player(float x, float y, std::string texture_file_name);
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 	void update();
-	size_t getWidth();
-	size_t getHeight();
-	sf::FloatRect getHitBox();
-	sf::Vector2f getPosition();
+	size_t getWidth() const;
+	size_t getHeight() const;
+	sf::FloatRect getHitBox() const;
+	sf::Vector2f getPosition() const;
 	void reduceHp(float dmg);
-	bool isDead();
-	float getHp();
+	bool isDead() const;
+	float getHp() const;
 };
 

@@ -34,8 +34,8 @@ void Explosion::update() {
 		}
 	}
 }
-void Explosion::draw(sf::RenderWindow& window) { window.draw(sprite); }
-bool Explosion::getDel() { return del; }
+void Explosion::draw(sf::RenderWindow& window) const { window.draw(sprite); }
+bool Explosion::getDel() const { return del; }
 void Explosion::setDel(bool x) { del = x; }
-size_t Explosion::getWidth() { return sprite.getLocalBounds().width; }
-size_t Explosion::getHeight() { return sprite.getLocalBounds().height; }
+size_t Explosion::getWidth() const { return sprite.getLocalBounds().width; }
+size_t Explosion::getHeight() const { return sprite.getLocalBounds().height; }

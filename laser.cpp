@@ -9,8 +9,8 @@ Laser::Laser(float x, float y) {
 void Laser::update() {
 	sprite.move(0.f, -LASER_SPEEDY);
 }
-size_t Laser::getWidth() { return sprite.getLocalBounds().width; }
-size_t Laser::getHeight() { return sprite.getLocalBounds().height; }
-sf::FloatRect Laser::getHitBox() { return sprite.getGlobalBounds(); }
-void Laser::draw(sf::RenderWindow& window) { window.draw(sprite); }
-sf::Vector2f Laser::getPosition() { return sprite.getPosition(); }
+size_t Laser::getWidth() const { return sprite.getLocalBounds().width; }
+size_t Laser::getHeight() const { return sprite.getLocalBounds().height; }
+sf::FloatRect Laser::getHitBox() const { return sprite.getGlobalBounds(); }
+void Laser::draw(sf::RenderWindow& window) const { window.draw(sprite); }
+sf::Vector2f Laser::getPosition() const { return sprite.getPosition(); }

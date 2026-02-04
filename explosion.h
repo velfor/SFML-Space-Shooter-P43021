@@ -13,13 +13,13 @@ private:
 	sf::Vector2f position;
 public:
 	Explosion(const sf::Vector2f &position);
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 	void update();
-	size_t getWidth();
-	size_t getHeight();
+	size_t getWidth() const;
+	size_t getHeight() const;
 	//sf::FloatRect getHitBox();
 	//sf::Vector2f getPosition();
-	bool getDel();
+	bool getDel() const;
 	void setDel(bool x);
 };
 

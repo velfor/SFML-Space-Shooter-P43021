@@ -10,12 +10,12 @@ private:
 	static std::string meteor_file_names[];
 public:
 	Meteor();
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 	void update();
-	size_t getWidth();
-	size_t getHeight();
-	sf::FloatRect getHitBox();
-	sf::Vector2f getPosition();
-	sf::Vector2f getCenter();
+	size_t getWidth() const;
+	size_t getHeight() const;
+	sf::FloatRect getHitBox() const;
+	sf::Vector2f getPosition() const;
+	sf::Vector2f getCenter() const;
 	void spawn();
 };
