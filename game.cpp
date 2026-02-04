@@ -1,4 +1,5 @@
 #include "game.h"
+#include <algorithm>
 #include <set>
 
 Game::Game() :
@@ -16,7 +17,7 @@ Game::Game() :
 	window.setFramerateLimit(60);
 	meteor_sprites.reserve(METEORS_QTY);
 	for (size_t i = 0; i < METEORS_QTY; i++) {
-		meteor_sprites.push_back(new Meteor());
+		meteor_sprites.emplace_back(std::make_unique<Meteor>());
 	}
 
 }
@@ -24,7 +25,6 @@ void Game::play() {
 	while (window.isOpen()) {
 		check_events();
 		update();
-		check_collisions();
 		draw();
 	}
 }
@@ -38,8 +38,9 @@ void Game::check_events() {
 			{
 				sf::Time elapsed = clock.getElapsedTime();
 				if (elapsed.asMilliseconds() > 250) {
-					laser_sprites.push_back(new Laser(player.getPosition().x +
-						player.getWidth() / 2 - 5, player.getPosition().y));
+					laser_sprites.emplace_back(std::make_unique<Laser>(
+						player.getPosition().x + player.getWidth() / 2 - 5,
+						player.getPosition().y));
 					clock.restart();
 				}
 			}
@@ -50,17 +51,17 @@ void Game::update() {
 	switch (game_state) {
 	case PLAY:
 		player.update();
-		for (size_t i = 0; i < METEORS_QTY; i++) {
-			meteor_sprites[i]->update();
+		for (auto &meteor : meteor_sprites) {
+			meteor->update();
 		}
-		for (auto it = laser_sprites.begin(); it != laser_sprites.end(); it++) {
-			(*it)->update();
+		for (auto &laser : laser_sprites) {
+			laser->update();
 		}
-		for (auto it = bonus_sprites.begin(); it != bonus_sprites.end(); it++) {
-			(*it)->update();
+		for (auto &bonus : bonus_sprites) {
+			bonus->update();
 		}
-		for (auto it = exp_sprites.begin(); it != exp_sprites.end(); it++) {
-			(*it)->update();
+		for (auto &exp : exp_sprites) {
+			exp->update();
 		}
 		check_collisions();
 		hp_text.update(std::to_string(static_cast<int>(player.getHp())));
@@ -75,17 +76,17 @@ void Game::draw() {
 	switch (game_state) {
 
 	case PLAY:
-		for (size_t i = 0; i < METEORS_QTY; i++) {
-			meteor_sprites[i]->draw(window);
+		for (const auto &meteor : meteor_sprites) {
+			meteor->draw(window);
 		}
-		for (auto it = laser_sprites.begin(); it != laser_sprites.end(); it++) {
-			(*it)->draw(window);
+		for (const auto &laser : laser_sprites) {
+			laser->draw(window);
 		}
-		for (auto it = bonus_sprites.begin(); it != bonus_sprites.end(); it++) {
-			(*it)->draw(window);
+		for (const auto &bonus : bonus_sprites) {
+			bonus->draw(window);
 		}
-		for (auto it = exp_sprites.begin(); it != exp_sprites.end(); it++) {
-			(*it)->draw(window);
+		for (const auto &exp : exp_sprites) {
+			exp->draw(window);
 		}
 		player.draw(window);
 		hp_text.draw(window);
@@ -96,16 +97,15 @@ void Game::draw() {
 	window.display();
 }
 void Game::check_collisions() {
-	//игрок с метеорами
-	for (size_t i = 0; i < METEORS_QTY; i++) {
-		if (player.getHitBox().intersects(
-			meteor_sprites[i]->getHitBox()))
+	//пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	for (const auto &meteor : meteor_sprites) {
+		if (player.getHitBox().intersects(meteor->getHitBox()))
 		{
-			player.reduceHp(meteor_sprites[i]->getWidth()/3);
-			meteor_sprites[i]->spawn();
+			player.reduceHp(meteor->getWidth()/3);
+			meteor->spawn();
 		}
 	}
-	//удалить бонус, пересекающийся с игроком
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	std::set<std::shared_ptr<Bonus>> active_bonus;
 	copy_if(
 		bonus_sprites.begin(),
@@ -115,32 +115,32 @@ void Game::check_collisions() {
 	);
 	bonus_sprites.remove_if([&active_bonus](const auto &bonus) { return active_bonus.count(bonus) > 0; });
 	std::for_each(active_bonus.begin(), active_bonus.end(), [this](const auto &bonus){ bonus->action(&player); });
-	//конец игры
+	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	if (player.isDead()) game_state = GAME_OVER;
-	//удаление пуль за краем экрана
-	laser_sprites.remove_if([](Laser* laser) {return laser->getPosition().y < 0; });
-	//удаление бонусов за краем экрана
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+	laser_sprites.remove_if([](const auto &laser) { return laser->getPosition().y < 0; });
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	bonus_sprites.remove_if([](const auto &bonus) {
 		return bonus->getPosition().y > WINDOW_HEIGHT; });
-	//пули с метеорами
-	for (auto it = laser_sprites.begin(); it != laser_sprites.end(); it++) {
-		for (size_t i = 0; i < METEORS_QTY; i++) {
-			if ((*it)->getHitBox().intersects(meteor_sprites[i]->getHitBox()))
+	//пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	for (const auto &laser : laser_sprites) {
+		for (const auto &meteor : meteor_sprites) {
+			if (laser->getHitBox().intersects(meteor->getHitBox()))
 			{
-				exp_sprites.emplace_back(std::make_shared<Explosion>(meteor_sprites[i]->getCenter()));
+				exp_sprites.emplace_back(std::make_shared<Explosion>(meteor->getCenter()));
 
-				meteor_sprites[i]->spawn();
-				//c шансом 10% из метеора выпадает бонус
+				meteor->spawn();
+				//c пїЅпїЅпїЅпїЅпїЅпїЅ 10% пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				size_t chance = rand() % 100;
 				if (chance < 10) {
-					//сгенерировать случайное число для типа бонуса
+					//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 					auto new_bonus = std::make_shared<Bonus>(static_cast<Bonus::BonusType>(0),
-						meteor_sprites[i]->getPosition());
+						meteor->getPosition());
 					bonus_sprites.push_back(new_bonus);
 				}
 			}
 		}
 	}
-	//удаляем помеченные на удаление взрывы
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	exp_sprites.remove_if([](const auto &exp) {return exp->getDel(); });
 }
