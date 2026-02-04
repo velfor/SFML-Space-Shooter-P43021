@@ -7,6 +7,8 @@ private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 	float hp = PLAYER_HP;
+
+	float clamp_to_bounds(float x) const;
 public:
 	Player(float x, float y, std::string texture_file_name);
 	void draw(sf::RenderWindow& window) const;

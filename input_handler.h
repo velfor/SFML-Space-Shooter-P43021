@@ -12,4 +12,9 @@ public:
 		Player &player,
 		std::list<std::unique_ptr<Laser>> &lasers,
 		sf::Clock &fire_clock) const;
+
+private:
+	void try_fire(Player &player,
+		std::list<std::unique_ptr<Laser>> &lasers,
+		sf::Clock &fire_clock) const;
 };

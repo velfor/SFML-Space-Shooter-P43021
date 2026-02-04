@@ -1,6 +1,15 @@
 #include "entity_manager.h"
 #include "const.h"
 
+namespace {
+template <typename Container, typename Fn>
+void for_each_entity(Container &container, Fn &&fn) {
+	for (auto &entity : container) {
+		fn(entity);
+	}
+}
+} // namespace
+
 void EntityManager::spawn_meteors(size_t count) {
 	meteor_sprites.reserve(count);
 	for (size_t i = 0; i < count; i++) {
@@ -9,33 +18,17 @@ void EntityManager::spawn_meteors(size_t count) {
 }
 
 void EntityManager::update_all() {
-	for (auto &meteor : meteor_sprites) {
-		meteor->update();
-	}
-	for (auto &laser : laser_sprites) {
-		laser->update();
-	}
-	for (auto &bonus : bonus_sprites) {
-		bonus->update();
-	}
-	for (auto &exp : exp_sprites) {
-		exp->update();
-	}
+	for_each_entity(meteor_sprites, [](auto &meteor) { meteor->update(); });
+	for_each_entity(laser_sprites, [](auto &laser) { laser->update(); });
+	for_each_entity(bonus_sprites, [](auto &bonus) { bonus->update(); });
+	for_each_entity(exp_sprites, [](auto &exp) { exp->update(); });
 }
 
 void EntityManager::draw_all(sf::RenderWindow &window) const {
-	for (const auto &meteor : meteor_sprites) {
-		meteor->draw(window);
-	}
-	for (const auto &laser : laser_sprites) {
-		laser->draw(window);
-	}
-	for (const auto &bonus : bonus_sprites) {
-		bonus->draw(window);
-	}
-	for (const auto &exp : exp_sprites) {
-		exp->draw(window);
-	}
+	for_each_entity(meteor_sprites, [&window](const auto &meteor) { meteor->draw(window); });
+	for_each_entity(laser_sprites, [&window](const auto &laser) { laser->draw(window); });
+	for_each_entity(bonus_sprites, [&window](const auto &bonus) { bonus->draw(window); });
+	for_each_entity(exp_sprites, [&window](const auto &exp) { exp->draw(window); });
 }
 
 void EntityManager::cleanup_offscreen() {

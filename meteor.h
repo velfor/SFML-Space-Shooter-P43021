@@ -8,6 +8,8 @@ private:
 	float speedx;
 	float speedy;
 	static std::string meteor_file_names[];
+
+	bool is_offscreen() const;
 public:
 	Meteor();
 	void draw(sf::RenderWindow& window) const;

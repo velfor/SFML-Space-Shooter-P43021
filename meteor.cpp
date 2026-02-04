@@ -20,11 +20,7 @@ void Meteor::draw(sf::RenderWindow& window) const {
 }
 void Meteor::update() {
 	sprite.move(speedx, speedy);
-	if (sprite.getPosition().x < 0.f-getWidth() ||
-		sprite.getPosition().x > WINDOW_WIDTH ||
-		sprite.getPosition().y > WINDOW_HEIGHT
-		)
-	{
+	if (is_offscreen()) {
 		spawn();
 	}
 }
@@ -45,4 +41,10 @@ sf::Vector2f Meteor::getCenter() const {
 		sprite.getPosition().x + getWidth() / 2.0,
 		sprite.getPosition().y + getHeight() / 2.0
 	);
+}
+
+bool Meteor::is_offscreen() const {
+	return sprite.getPosition().x < 0.f - getWidth() ||
+		sprite.getPosition().x > WINDOW_WIDTH ||
+		sprite.getPosition().y > WINDOW_HEIGHT;
 }
