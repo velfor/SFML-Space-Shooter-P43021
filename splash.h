@@ -11,5 +11,5 @@ public:
 		texture.loadFromFile(IMAGES_FOLDER + "game-over.jpg");
 		sprite.setTexture(texture);
 	}
-	sf::Sprite getSprite() { return sprite; }
+	sf::Sprite getSprite() const { return sprite; }
 };

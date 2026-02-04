@@ -16,5 +16,5 @@ public:
 	}
 	//sf::Text getText() { return text; }
 	void update(std::string str) { text.setString(str); }
-	void draw(sf::RenderWindow& window) { window.draw(text); }
+	void draw(sf::RenderWindow& window) const { window.draw(text); }
 };

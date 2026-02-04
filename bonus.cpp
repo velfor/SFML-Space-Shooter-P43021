@@ -13,12 +13,12 @@ Bonus::Bonus(BonusType type, sf::Vector2f position) {
 	}
 }
 void Bonus::update() {sprite.move(0.f, 10.f);}
-void Bonus::draw(sf::RenderWindow& window) { window.draw(sprite); }
-size_t Bonus::getWidth() { return sprite.getLocalBounds().width; }
-size_t Bonus::getHeight() { return sprite.getLocalBounds().height; }
-sf::FloatRect Bonus::getHitBox() { return sprite.getGlobalBounds(); }
-sf::Vector2f Bonus::getPosition() { return sprite.getPosition(); }
-bool Bonus::getDel() { return del; }
+void Bonus::draw(sf::RenderWindow& window) const { window.draw(sprite); }
+size_t Bonus::getWidth() const { return sprite.getLocalBounds().width; }
+size_t Bonus::getHeight() const { return sprite.getLocalBounds().height; }
+sf::FloatRect Bonus::getHitBox() const { return sprite.getGlobalBounds(); }
+sf::Vector2f Bonus::getPosition() const { return sprite.getPosition(); }
+bool Bonus::getDel() const { return del; }
 void Bonus::setDel(bool x) { del = x; }
 
 void Bonus::action(Player *player) const

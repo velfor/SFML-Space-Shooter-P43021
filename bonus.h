@@ -8,15 +8,15 @@ public:
 	enum BonusType {HP, SHIELD, FIRE_RATE};
 	Bonus(BonusType type, sf::Vector2f position);
 	void update();
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 
 	void action(Player *player) const;
 
-	size_t getWidth();
-	size_t getHeight();
-	sf::FloatRect getHitBox();
-	sf::Vector2f getPosition();
-	bool getDel();
+	size_t getWidth() const;
+	size_t getHeight() const;
+	sf::FloatRect getHitBox() const;
+	sf::Vector2f getPosition() const;
+	bool getDel() const;
 	void setDel(bool x);
 private:
 	sf::Sprite sprite;

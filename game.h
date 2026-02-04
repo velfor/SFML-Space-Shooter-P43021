@@ -1,37 +1,36 @@
 #pragma once
-#include <memory>
 #include "const.h"
 #include "SFML/Graphics.hpp"
+#include "collision_system.h"
+#include "entity_manager.h"
+#include "game_state.h"
+#include "input_handler.h"
 #include "player.h"
-#include "meteor.h"
-#include <vector>
+#include "render_system.h"
 #include "splash.h"
-#include <list>
-#include "laser.h"
 #include "text.h"
-#include "bonus.h"
-#include "explosion.h"
+#include "update_system.h"
 
+// Orchestrates the high-level game loop and state transitions.
 class Game {
 public:
-	enum GameState {INTRO, PLAY, PAUSE, GAME_OVER};
 	Game();
 	void play();
 private:
 	void check_events();
 	void update();
 	void draw();
-	void check_collisions();
 
 	sf::RenderWindow window;
 	Player player;
-	GameState game_state = PLAY;
+	GameState game_state = GameState::PLAY;
 	Splash game_over;
-	std::vector<std::unique_ptr<Meteor>> meteor_sprites;
-	std::list<std::unique_ptr<Laser>> laser_sprites;
 	TextObj hp_text;
 	sf::Clock clock;
-	std::list<std::shared_ptr<Bonus>> bonus_sprites;
-	std::list<std::shared_ptr<Explosion>> exp_sprites;
+	EntityManager entities;
+	InputHandler input_handler;
+	UpdateSystem update_system;
+	RenderSystem render_system;
+	CollisionSystem collision_system;
 };
 

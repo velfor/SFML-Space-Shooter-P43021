@@ -15,7 +15,7 @@ Meteor::Meteor() {
 	sprite.setTexture(texture);
 	spawn();
 }
-void Meteor::draw(sf::RenderWindow& window) {
+void Meteor::draw(sf::RenderWindow& window) const {
 	window.draw(sprite);
 }
 void Meteor::update() {
@@ -28,10 +28,10 @@ void Meteor::update() {
 		spawn();
 	}
 }
-size_t Meteor::getWidth() { return sprite.getLocalBounds().width; }
-size_t Meteor::getHeight() { return sprite.getLocalBounds().height; }
-sf::FloatRect Meteor::getHitBox() { return sprite.getGlobalBounds(); }
-sf::Vector2f Meteor::getPosition() { return sprite.getPosition(); }
+size_t Meteor::getWidth() const { return sprite.getLocalBounds().width; }
+size_t Meteor::getHeight() const { return sprite.getLocalBounds().height; }
+sf::FloatRect Meteor::getHitBox() const { return sprite.getGlobalBounds(); }
+sf::Vector2f Meteor::getPosition() const { return sprite.getPosition(); }
 void Meteor::spawn() {
 	float startx = rand() % (static_cast<size_t>(WINDOW_WIDTH) - getWidth() + 1);
 	float starty = rand() % (static_cast<size_t>(WINDOW_HEIGHT) + 1) - WINDOW_HEIGHT;
@@ -39,7 +39,7 @@ void Meteor::spawn() {
 	speedx = rand() % 5 - 2;
 	speedy = rand() % 8 + 3;
 }
-sf::Vector2f Meteor::getCenter() {
+sf::Vector2f Meteor::getCenter() const {
 	return sf::Vector2f
 	(
 		sprite.getPosition().x + getWidth() / 2.0,
